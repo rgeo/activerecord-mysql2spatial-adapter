@@ -1,16 +1,12 @@
 == MySQL2 Spatial ActiveRecord Adapter
 
-This is an ActiveRecord connection adapter for MySQL Spatial Extensions.
-It is based on the stock MySQL2 adapter, but provides built-in support for
-spatial columns. It uses the RGeo library to represent spatial data.
-
-=== Summary
-
-The MySQL Spatial ActiveRecord Adapter is an ActiveRecord connection
+The MySQL2 Spatial ActiveRecord Adapter is an ActiveRecord connection
 adapter based on the standard mysql2 adapter. It extends the stock adapter
-to provide support for spatial columns in MySQL, mapping the values
-properly to RGeo spatial objects. Like the standard mysql2 adapter, this
-requires the mysql2 gem (version 0.2.6 or later).
+to provide support for spatial columns and indexes in MySQL, using the
+RGeo library to represent spatial data in Ruby. Like the standard mysql2
+adapter, this adapter requires the mysql2 gem.
+
+=== Usage
 
 To use this adapter, add this gem, "activerecord-mysql2spatial-adapter",
 to your Gemfile, and then request the adapter name "mysql2spatial" in
@@ -18,28 +14,89 @@ your database connection configuration (which, for a Rails application,
 is in the config/database.yml file). The other database connection
 configuration parameters are the same as for the stock mysql2 adapter.
 
+First, this adapter extends the migration syntax to support creating 
+spatial columns and indexes. To create a spatial column, use the
+<tt>:geometry</tt> type, or any of the OGC spatial types such as
+<tt>:point</tt> or <tt>:line_string</tt>. To create a spatial index, set
+the <tt>:spatial</tt> option to true. Remember that, on some versions of
+MySQL, only the MyISAM engine supports spatial indexes, and the indexed
+column may need to be NOT NULL.
+
+Examples:
+
+ create_table :spatial_table, :options => 'ENGINE=MyISAM' do |t|
+   t.column :latlon, :point, :null => false
+   t.line_string :path
+   t.geometry :shape
+ end
+ change_table :spatial_table do |t|
+   t.index :latlon, :spatial => true
+ end
+
+When this adapter is in use, spatial attributes in your ActiveRecord
+objects will have RGeo geometry values. You can set spatial attributes
+either to RGeo geometry objects, or to strings in WKT (well-known text)
+format, which the adapter will automatically convert to geometry objects.
+
+To specify the RGeo geometry factory, you can either set an explicit
+factory for a column, or provide a factory generator that will yield the
+appropriate factory for the table's spatial columns based on the value.
+For the former, call the set_rgeo_factory_for_column class method on your
+ActiveRecord class. For the latter, set the rgeo_factory_generator class
+attribute. This generator should understand at least the <tt>:srid</tt>
+options, which will be provided based on the SRID embedded in the value
+itself, since MySQL does not support SRID or dimension constraints on
+spatial columns themselves. The set_rgeo_factory_for_column and
+rgeo_factory_generator methods are actually implemented and documented in
+the <b>rgeo-activerecord</b> gem.
+
+Examples, given the spatial table defined above:
+
+ class SpatialTable < ActiveRecord::Base
+   
+   # By default, use the GEOS implementation for spatial columns.
+   self.rgeo_factory_generator = RGeo::Geos.method(:factory)
+   
+   # But use a geographic implementation for the :latlon column.
+   set_rgeo_factory_for_column(:latlon, RGeo::Geographic.spherical_factory)
+   
+ end
+
+Now you can interact with the data using the RGeo types:
+
+ rec = SpatialTable.new
+ rec.latlon = 'POINT(-122 47)'   # You can set by feature object or WKT.
+ loc = rec.latlon                # Accessing always returns a feature object, in
+                                 # this case, a geographic that understands latitude.
+ loc.latitude                    # => 47
+ rec.shape = loc                 # the factory for the :shape column is GEOS, so the
+                                 # value will be cast from geographic to GEOS.
+ RGeo::Geos.is_geos?(rec.shape)  # => true
+
 === Installation
 
 This adapter has the following requirements:
 
 * Ruby 1.8.7 or later. Ruby 1.9.2 or later preferred.
-* ActiveRecord 3.0.3 or later.
+* MySQL server 5.0 or later required for spatial extensions.
+* ActiveRecord 3.0.3 or later. Earlier versions will not work.
 * rgeo-activerecord gem 0.2.0 or later.
 * mysql2 gem 0.2.6 or later.
-* MySQL server 5.0 or later required for spatial extensions.
 
 Install this adapter as a gem:
 
  gem install activerecord-mysql2spatial-adapter
 
-See the README for the required "rgeo" gem for further installation
-information.
+See the README for the "rgeo" gem, a required dependency, for further
+installation information.
 
 === Development and support
 
 Documentation is available at http://virtuoso.rubyforge.org/activerecord-mysql2spatial-adapter/README_rdoc.html
 
 Source code is hosted on Github at http://github.com/dazuma/activerecord-mysql2spatial-adapter
+
+Contributions are welcome. Fork the project on Github.
 
 Report bugs on Github issues at http://github.org/dazuma/activerecord-mysql2spatial-adapter/issues
 

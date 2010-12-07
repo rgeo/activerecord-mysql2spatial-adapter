@@ -38,12 +38,30 @@ require 'rgeo/active_record'
 require 'active_record/connection_adapters/mysql2_adapter'
 
 
+# :stopdoc:
+
+module Arel
+  module Visitors
+    VISITORS['mysql2spatial'] = ::Arel::Visitors::MySQL
+  end
+end
+
+# :startdoc:
+
+
+# The activerecord-mysql2spatial-adapter gem installs the *mysql2spatial*
+# connection adapter into ActiveRecord.
+
 module ActiveRecord
+  
+  
+  # ActiveRecord looks for the mysql2spatial_connection factory method in
+  # this class.
   
   class Base
     
     
-    # Create a mysql2spatial connection adapter
+    # Create a mysql2spatial connection adapter.
     
     def self.mysql2spatial_connection(config_)
       config_[:username] = 'root' if config_[:username].nil?
@@ -157,12 +175,12 @@ module ActiveRecord
         
         
         def type_cast(value_)
-          type == :geometry ? SpatialColumn.string_to_geometry(value_, @ar_class) : super
+          type == :geometry ? SpatialColumn.convert_to_geometry(value_, @ar_class, name) : super
         end
         
         
         def type_cast_code(var_name_)
-          type == :geometry ? "::ActiveRecord::ConnectionAdapters::Mysql2SpatialAdapter::SpatialColumn.string_to_geometry(#{var_name_}, self.class)" : super
+          type == :geometry ? "::ActiveRecord::ConnectionAdapters::Mysql2SpatialAdapter::SpatialColumn.convert_to_geometry(#{var_name_}, self.class, #{name.inspect})" : super
         end
         
         
@@ -173,17 +191,19 @@ module ActiveRecord
         end
         
         
-        def self.string_to_geometry(str_, ar_class_)
-          case str_
+        def self.convert_to_geometry(input_, ar_class_, column_)
+          case input_
           when ::RGeo::Feature::Geometry
-            str_
+            factory_ = ar_class_.rgeo_factory_for_column(column_, :srid => input_.srid)
+            ::RGeo::Feature.cast(input_, factory_)
           when ::String
-            marker_ = str_[4,1]
-            factory_generator_ = ar_class_.rgeo_factory_generator
+            marker_ = input_[4,1]
             if marker_ == "\x00" || marker_ == "\x01"
-              ::RGeo::WKRep::WKBParser.new(factory_generator_, :default_srid => str_[0,4].unpack(marker_ == "\x01" ? 'V' : 'N').first).parse(str_[4..-1])
+              factory_ = ar_class_.rgeo_factory_for_column(column_, :srid => input_[0,4].unpack(marker_ == "\x01" ? 'V' : 'N').first)
+              ::RGeo::WKRep::WKBParser.new(factory_).parse(input_[4..-1])
             else
-              ::RGeo::WKRep::WKTParser.new(factory_generator_, :support_ewkt => true).parse(str_)
+              factory_ = ar_class_.rgeo_factory_for_column(column_)
+              ::RGeo::WKRep::WKTParser.new(factory_, :support_ewkt => true).parse(input_)
             end
           else
             nil
