@@ -1,3 +1,9 @@
+=== 0.2.1 / 2010-12-27
+
+* Support for basic spatial equality queries. e.g. constructs such as:
+    MyClass.where(:geom_column => factory.point(1, 2))
+    MyClass.where(:geom_column => 'POINT(1 2)')
+
 === 0.2.0 / 2010-12-07
 
 * Initial public alpha release. Spun activerecord-mysql2spatial-adapter off from the core rgeo gem.

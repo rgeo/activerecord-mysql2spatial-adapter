@@ -42,7 +42,24 @@ require 'active_record/connection_adapters/mysql2_adapter'
 
 module Arel
   module Visitors
-    VISITORS['mysql2spatial'] = ::Arel::Visitors::MySQL
+    
+    class MySQL2Spatial < MySQL
+      
+      FUNC_MAP = {
+        'ST_WKTToSQL' => 'GeomFromText',
+        'ST_Equals' => 'Equals',
+      }
+      
+      include ::RGeo::ActiveRecord::SpatialToSql
+      
+      def st_func(standard_name_)
+        FUNC_MAP[standard_name_] || standard_name_
+      end
+      
+    end
+    
+    VISITORS['mysql2spatial'] = ::Arel::Visitors::MySQL2Spatial
+    
   end
 end
 

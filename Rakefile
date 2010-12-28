@@ -62,7 +62,7 @@ module RAKEFILE
   PRODUCT_SUMMARY = "An ActiveRecord adapter for MySQL Spatial Extensions, based on RGeo and the mysql2 gem."
   PRODUCT_DESCRIPTION = "This is an ActiveRecord connection adapter for MySQL Spatial Extensions. It is based on the stock MySQL2 adapter, but provides built-in support for spatial columns. It uses the RGeo library to represent spatial data in Ruby."
   
-  DEPENDENCIES = [['rgeo-activerecord', '>= 0.2.0'], ['mysql2', '>= 0.2.6']]
+  DEPENDENCIES = [['rgeo-activerecord', '>= 0.2.1'], ['mysql2', '>= 0.2.6']]
   DEVELOPMENT_DEPENDENCIES = []
   
 end
