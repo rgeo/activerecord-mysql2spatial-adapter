@@ -1,3 +1,7 @@
+=== 0.2.2 / 2011-01-19
+
+* Experimental support for complex spatial queries. (Requires Arel 2.1, which is expected to be released with Rails 3.1.)
+
 === 0.2.1 / 2010-12-27
 
 * Support for basic spatial equality queries. e.g. constructs such as:
