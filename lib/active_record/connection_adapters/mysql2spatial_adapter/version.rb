@@ -34,56 +34,29 @@
 ;
 
 
-require 'rgeo/active_record'
-require 'active_record/connection_adapters/mysql2_adapter'
-
-
-# The activerecord-mysql2spatial-adapter gem installs the *mysql2spatial*
-# connection adapter into ActiveRecord.
-
-module ActiveRecord
-  
-  
-  # ActiveRecord looks for the mysql2spatial_connection factory method in
-  # this class.
-  
-  class Base
-    
-    
-    # Create a mysql2spatial connection adapter.
-    
-    def self.mysql2spatial_connection(config_)
-      config_[:username] = 'root' if config_[:username].nil?
-      if ::Mysql2::Client.const_defined?(:FOUND_ROWS)
-        config_[:flags] = ::Mysql2::Client::FOUND_ROWS
-      end
-      client_ = ::Mysql2::Client.new(config_.symbolize_keys)
-      options_ = [config_[:host], config_[:username], config_[:password], config_[:database], config_[:port], config_[:socket], 0]
-      ::ActiveRecord::ConnectionAdapters::Mysql2SpatialAdapter::MainAdapter.new(client_, logger, options_, config_)
-    end
-    
-    
-  end
-  
-  
-  # All ActiveRecord adapters go in this namespace.
-  
-  module ConnectionAdapters
-    
-    
-    # The Mysql2Spatial adapter
-    
-    module Mysql2SpatialAdapter
-    end
-    
-    
-  end
-  
-  
+begin
+  require 'versionomy'
+rescue ::LoadError
 end
 
 
-require 'active_record/connection_adapters/mysql2spatial_adapter/version.rb'
-require 'active_record/connection_adapters/mysql2spatial_adapter/main_adapter.rb'
-require 'active_record/connection_adapters/mysql2spatial_adapter/spatial_column.rb'
-require 'active_record/connection_adapters/mysql2spatial_adapter/arel_tosql.rb'
+module ActiveRecord
+  
+  module ConnectionAdapters
+    
+    module Mysql2SpatialAdapter
+      
+      
+      # Current version of Mysql2SpatialAdapter as a frozen string
+      VERSION_STRING = ::File.read(::File.dirname(__FILE__)+'/../../../../Version').strip.freeze
+      
+      # Current version of Mysql2SpatialAdapter as a Versionomy object, if the
+      # Versionomy gem is available; otherwise equal to VERSION_STRING.
+      VERSION = defined?(::Versionomy) ? ::Versionomy.parse(VERSION_STRING) : VERSION_STRING
+      
+      
+    end
+    
+  end
+  
+end

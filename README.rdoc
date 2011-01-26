@@ -7,13 +7,9 @@ using the {RGeo}[http://github.com/dazuma/rgeo] library to represent
 spatial data in Ruby. Like the standard mysql2 adapter, this adapter
 requires the mysql2 gem.
 
-=== Usage
+== What This Adapter Provides
 
-To use this adapter, add this gem, "activerecord-mysql2spatial-adapter",
-to your Gemfile, and then request the adapter name "mysql2spatial" in
-your database connection configuration (which, for a Rails application,
-is in the config/database.yml file). The other database connection
-configuration parameters are the same as for the stock mysql2 adapter.
+=== Spatial Migrations
 
 First, this adapter extends the migration syntax to support creating 
 spatial columns and indexes. To create a spatial column, use the
@@ -34,15 +30,20 @@ Examples:
    t.index :latlon, :spatial => true
  end
 
+=== Spatial Attributes
+
 When this adapter is in use, spatial attributes in your \ActiveRecord
 objects will have RGeo geometry values. You can set spatial attributes
 either to RGeo geometry objects, or to strings in WKT (well-known text)
 format, which the adapter will automatically convert to geometry objects.
 
-To specify the RGeo geometry factory, you can either set an explicit
-factory for a column, or provide a factory generator that will yield the
-appropriate factory for the table's spatial columns based on the value.
-For the former, call the set_rgeo_factory_for_column class method on your
+Spatial objects in RGeo are tied to a factory that specifies the
+coordinate system as well as other behaviors of the object. You must
+therefore specify a factory for each spatial column (attribute) in your
+ActiveRecord class. You can either set an explicit factory for a specific
+column, or provide a factory generator that will yield the appropriate
+factory for the table's spatial columns based on their types. For the
+former, call the <tt>set_rgeo_factory_for_column</tt> class method on your
 \ActiveRecord class. For the latter, set the rgeo_factory_generator class
 attribute. This generator should understand at least the <tt>:srid</tt>
 options, which will be provided based on the SRID embedded in the value
@@ -74,6 +75,8 @@ Now you can interact with the data using the RGeo types:
                                  # value will be cast from geographic to GEOS.
  RGeo::Geos.is_geos?(rec.shape)  # => true
 
+=== Spatial Queries
+
 You can create simple queries based on spatial equality in the same way
 you would on a scalar column:
 
@@ -83,19 +86,23 @@ You can also use WKT:
 
  rec = SpatialTable.where(:latlon => 'POINT(-122 47)').first
 
-Other types of queries currently must be written in SQL. However, we are
-investigating writing a set of Arel extensions for constructing arbitrary
-spatial queries.
+The adapter also provides experimental support for more complex queries
+such as radius searches. However, these extensions require Arel 2.1
+(which is scheduled for release with Rails 3.1). We do not have these
+documented yet, and the syntax is subject to change. For now, you should
+write more complex queries in SQL.
 
-=== Installation
+== Installation And Configuration
+
+=== Installing The Adapter Gem
 
 This adapter has the following requirements:
 
 * Ruby 1.8.7 or later. Ruby 1.9.2 or later preferred.
 * MySQL server 5.0 or later required for spatial extensions.
 * \ActiveRecord 3.0.3 or later. Earlier versions will not work.
-* rgeo gem 0.2.3 or later.
-* rgeo-activerecord gem 0.2.1 or later.
+* rgeo gem 0.2.4 or later.
+* rgeo-activerecord gem 0.3.0 or later.
 * mysql2 gem 0.2.6 or later.
 
 Install this adapter as a gem:
@@ -104,6 +111,28 @@ Install this adapter as a gem:
 
 See the README for the "rgeo" gem, a required dependency, for further
 installation information.
+
+=== Basic Setup
+
+To use this adapter, add this gem, "activerecord-mysql2spatial-adapter",
+to your Gemfile, and then request the adapter name "mysql2spatial" in
+your database connection configuration (which, for a Rails application,
+is in the config/database.yml file). The other database connection
+configuration parameters are the same as for the stock mysql2 adapter,
+so you can create a new Rails application using:
+
+ rails new my_app --database=mysql
+
+...and then just change the adapter name to "mysql2spatial".
+
+== Additional Information
+
+=== Known bugs and limitations
+
+This adapter is not yet well tested. There are probably some bugs and
+holes in the functionality. We aren't using MySQL spatial extensions in
+production at GeoPage, so we would appreciate testing help and feedback
+from anyone who is.
 
 === Development and support
 
@@ -119,7 +148,8 @@ Contact the author at dazuma at gmail dot com.
 
 === Acknowledgments
 
-RGeo is written by Daniel Azuma (http://www.daniel-azuma.com).
+The Mysql2Spatial Adapter and its supporting libraries (including RGeo)
+are written by Daniel Azuma (http://www.daniel-azuma.com).
 
 Development of RGeo is sponsored by GeoPage, Inc. (http://www.geopage.com).
 

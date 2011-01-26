@@ -166,6 +166,36 @@ module RGeo
             end
             
             
+            def test_create_simple_geometry_using_shortcut
+              klass_ = create_ar_class
+              klass_.connection.create_table(:spatial_test) do |t_|
+                t_.geometry 'latlon'
+              end
+              assert_equal(::RGeo::Feature::Geometry, klass_.columns.last.geometric_type)
+              assert(klass_.cached_attributes.include?('latlon'))
+            end
+            
+            
+            def test_create_point_geometry_using_shortcut
+              klass_ = create_ar_class
+              klass_.connection.create_table(:spatial_test) do |t_|
+                t_.point 'latlon'
+              end
+              assert_equal(::RGeo::Feature::Point, klass_.columns.last.geometric_type)
+              assert(klass_.cached_attributes.include?('latlon'))
+            end
+            
+            
+            def test_create_geometry_using_limit
+              klass_ = create_ar_class
+              klass_.connection.create_table(:spatial_test) do |t_|
+                t_.spatial 'geom', :limit => {:type => :line_string}
+              end
+              assert_equal(::RGeo::Feature::LineString, klass_.columns.last.geometric_type)
+              assert(klass_.cached_attributes.include?('geom'))
+            end
+            
+            
           end
           
         end

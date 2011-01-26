@@ -34,56 +34,36 @@
 ;
 
 
-require 'rgeo/active_record'
-require 'active_record/connection_adapters/mysql2_adapter'
+# :stopdoc:
 
-
-# The activerecord-mysql2spatial-adapter gem installs the *mysql2spatial*
-# connection adapter into ActiveRecord.
-
-module ActiveRecord
-  
-  
-  # ActiveRecord looks for the mysql2spatial_connection factory method in
-  # this class.
-  
-  class Base
+module Arel
+  module Visitors
     
-    
-    # Create a mysql2spatial connection adapter.
-    
-    def self.mysql2spatial_connection(config_)
-      config_[:username] = 'root' if config_[:username].nil?
-      if ::Mysql2::Client.const_defined?(:FOUND_ROWS)
-        config_[:flags] = ::Mysql2::Client::FOUND_ROWS
+    class MySQL2Spatial < MySQL
+      
+      FUNC_MAP = {
+        'st_wkttosql' => 'GeomFromText',
+        'st_wkbtosql' => 'GeomFromWKB',
+        'st_length' => 'GLength',
+      }
+      
+      include ::RGeo::ActiveRecord::SpatialToSql
+      
+      def st_func(standard_name_)
+        if (name_ = FUNC_MAP[standard_name_.downcase])
+          name_
+        elsif standard_name_ =~ /^st_(\w+)$/i
+          $1
+        else
+          standard_name_
+        end
       end
-      client_ = ::Mysql2::Client.new(config_.symbolize_keys)
-      options_ = [config_[:host], config_[:username], config_[:password], config_[:database], config_[:port], config_[:socket], 0]
-      ::ActiveRecord::ConnectionAdapters::Mysql2SpatialAdapter::MainAdapter.new(client_, logger, options_, config_)
+      
     end
     
+    VISITORS['mysql2spatial'] = ::Arel::Visitors::MySQL2Spatial
     
   end
-  
-  
-  # All ActiveRecord adapters go in this namespace.
-  
-  module ConnectionAdapters
-    
-    
-    # The Mysql2Spatial adapter
-    
-    module Mysql2SpatialAdapter
-    end
-    
-    
-  end
-  
-  
 end
 
-
-require 'active_record/connection_adapters/mysql2spatial_adapter/version.rb'
-require 'active_record/connection_adapters/mysql2spatial_adapter/main_adapter.rb'
-require 'active_record/connection_adapters/mysql2spatial_adapter/spatial_column.rb'
-require 'active_record/connection_adapters/mysql2spatial_adapter/arel_tosql.rb'
+# :startdoc:
