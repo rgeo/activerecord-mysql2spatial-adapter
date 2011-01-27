@@ -67,15 +67,15 @@ module ActiveRecord
   
   
   # All ActiveRecord adapters go in this namespace.
-  
   module ConnectionAdapters
     
-    
     # The Mysql2Spatial adapter
-    
     module Mysql2SpatialAdapter
+      
+      # The name returned by the adapter_name method of this adapter.
+      ADAPTER_NAME = 'Mysql2Spatial'.freeze
+      
     end
-    
     
   end
   

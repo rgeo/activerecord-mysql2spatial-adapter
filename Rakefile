@@ -62,7 +62,7 @@ module RAKEFILE
   PRODUCT_SUMMARY = "An ActiveRecord adapter for MySQL Spatial Extensions, based on RGeo and the mysql2 gem."
   PRODUCT_DESCRIPTION = "This is an ActiveRecord connection adapter for MySQL Spatial Extensions. It is based on the stock MySQL2 adapter, but provides built-in support for spatial columns. It uses the RGeo library to represent spatial data in Ruby."
   
-  DEPENDENCIES = [['rgeo-activerecord', '>= 0.3.0'], ['mysql2', '>= 0.2.6']]
+  DEPENDENCIES = [['rgeo-activerecord', '~> 0.3.0'], ['mysql2', '>= 0.2.6']]
   DEVELOPMENT_DEPENDENCIES = []
   
 end
@@ -173,9 +173,8 @@ file "#{::RAKEFILE::DOC_DIRECTORY}/index.html" => ::RAKEFILE::ALL_RDOC_FILES do
   args_ << '--title' << ::RAKEFILE::RDOC_TITLE
   args_ << '-f' << 'darkfish'
   args_ << '--verbose' if ::ENV['VERBOSE']
-  require 'rdoc'
+  gem 'rdoc'
   require 'rdoc/rdoc'
-  require 'rdoc/generator/darkfish'
   ::RDoc::RDoc.new.document(args_ + ::RAKEFILE::ALL_RDOC_FILES)
 end
 
