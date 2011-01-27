@@ -46,17 +46,21 @@ module ActiveRecord
         
         ADAPTER_NAME = 'Mysql2Spatial'.freeze
         
-        
-        NATIVE_DATABASE_TYPES = Mysql2Adapter::NATIVE_DATABASE_TYPES.merge(:geometry => {:name => "geometry"}, :point => {:name => "point"}, :line_string => {:name => "linestring"}, :polygon => {:name => "polygon"}, :geometry_collection => {:name => "geometrycollection"}, :multi_point => {:name => "multipoint"}, :multi_line_string => {:name => "multilinestring"}, :multi_polygon => {:name => "multipolygon"})
-        
-        
-        def native_database_types
-          NATIVE_DATABASE_TYPES
-        end
+        NATIVE_DATABASE_TYPES = Mysql2Adapter::NATIVE_DATABASE_TYPES.merge(:spatial => {:name => "geometry"})
         
         
         def adapter_name
           ADAPTER_NAME
+        end
+        
+        
+        def spatial_column_constructor(name_)
+          ::RGeo::ActiveRecord::DEFAULT_SPATIAL_COLUMN_CONSTRUCTORS[name_]
+        end
+        
+        
+        def native_database_types
+          NATIVE_DATABASE_TYPES
         end
         
         
@@ -112,8 +116,9 @@ module ActiveRecord
               current_index_ = row_[:Key_name]
               indexes_ << ::RGeo::ActiveRecord::SpatialIndexDefinition.new(row_[:Table], row_[:Key_name], row_[:Non_unique] == 0, [], [], row_[:Index_type] == 'SPATIAL')
             end
-            indexes_.last.columns << row_[:Column_name]
-            indexes_.last.lengths << row_[:Sub_part]
+            last_index_ = indexes_.last
+            last_index_.columns << row_[:Column_name]
+            last_index_.lengths << row_[:Sub_part] unless last_index_.spatial
           end
           indexes_
         end

@@ -63,29 +63,29 @@ module ActiveRecord
         
         
         def spatial?
-          type == :geometry
+          type == :spatial
         end
         
         
         def klass
-          type == :geometry ? ::RGeo::Feature::Geometry : super
+          type == :spatial ? ::RGeo::Feature::Geometry : super
         end
         
         
         def type_cast(value_)
-          type == :geometry ? SpatialColumn.convert_to_geometry(value_, @ar_class, name) : super
+          type == :spatial ? SpatialColumn.convert_to_geometry(value_, @ar_class, name) : super
         end
         
         
         def type_cast_code(var_name_)
-          type == :geometry ? "::ActiveRecord::ConnectionAdapters::Mysql2SpatialAdapter::SpatialColumn.convert_to_geometry(#{var_name_}, self.class, #{name.inspect})" : super
+          type == :spatial ? "::ActiveRecord::ConnectionAdapters::Mysql2SpatialAdapter::SpatialColumn.convert_to_geometry(#{var_name_}, self.class, #{name.inspect})" : super
         end
         
         
         private
         
         def simplified_type(sql_type_)
-          sql_type_ =~ /geometry|point|linestring|polygon/i ? :geometry : super
+          sql_type_ =~ /geometry|point|linestring|polygon/i ? :spatial : super
         end
         
         
