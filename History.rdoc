@@ -1,3 +1,7 @@
+=== 0.3.1 / 2011-02-28
+
+* Now requires rgeo-activerecord 0.3.1 (which brings a critical fix involving declaring multiple spatial columns in migration).
+
 === 0.3.0 / 2011-01-26
 
 * Reworked type and constraint handling, which should result in a large number of bug fixes, especially related to schema dumps.

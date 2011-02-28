@@ -62,7 +62,7 @@ module RAKEFILE
   PRODUCT_SUMMARY = "An ActiveRecord adapter for MySQL Spatial Extensions, based on RGeo and the mysql2 gem."
   PRODUCT_DESCRIPTION = "This is an ActiveRecord connection adapter for MySQL Spatial Extensions. It is based on the stock MySQL2 adapter, but provides built-in support for spatial columns. It uses the RGeo library to represent spatial data in Ruby."
   
-  DEPENDENCIES = [['rgeo-activerecord', '~> 0.3.0'], ['mysql2', '>= 0.2.6']]
+  DEPENDENCIES = [['rgeo-activerecord', '~> 0.3.1'], ['mysql2', '>= 0.2.6']]
   DEVELOPMENT_DEPENDENCIES = []
   
 end
@@ -180,6 +180,7 @@ end
 
 
 task :publish_rdoc => :build_rdoc do
+  require 'yaml'
   config_ = ::YAML.load(::File.read(::File.expand_path("~/.rubyforge/user-config.yml")))
   username_ = config_['username']
   sh "rsync -av --delete #{::RAKEFILE::DOC_DIRECTORY}/ #{username_}@rubyforge.org:/var/www/gforge-projects/#{::RAKEFILE::RUBYFORGE_PROJECT}/#{::RAKEFILE::PRODUCT_NAME}"
