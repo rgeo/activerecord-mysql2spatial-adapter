@@ -102,8 +102,8 @@ This adapter has the following requirements:
 * MySQL server 5.0 or later required for spatial extensions.
 * \ActiveRecord 3.0.3 or later. Earlier versions will not work.
 * mysql2 gem 0.2.6 or later.
-* rgeo gem 0.2.8 or later.
-* rgeo-activerecord gem 0.3.3 or later.
+* rgeo gem 0.3.1 or later.
+* rgeo-activerecord gem 0.3.4 or later.
 
 Install this adapter as a gem:
 

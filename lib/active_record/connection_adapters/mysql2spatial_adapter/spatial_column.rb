@@ -95,15 +95,23 @@ module ActiveRecord
           case input_
           when ::RGeo::Feature::Geometry
             factory_ = ar_class_.rgeo_factory_for_column(column_, :srid => input_.srid)
-            ::RGeo::Feature.cast(input_, factory_)
+            ::RGeo::Feature.cast(input_, factory_) rescue nil
           when ::String
             marker_ = input_[4,1]
             if marker_ == "\x00" || marker_ == "\x01"
-              factory_ = ar_class_.rgeo_factory_for_column(column_, :srid => input_[0,4].unpack(marker_ == "\x01" ? 'V' : 'N').first)
-              ::RGeo::WKRep::WKBParser.new(factory_).parse(input_[4..-1])
+              factory_ = ar_class_.rgeo_factory_for_column(column_,
+                :srid => input_[0,4].unpack(marker_ == "\x01" ? 'V' : 'N').first)
+              ::RGeo::WKRep::WKBParser.new(factory_).parse(input_[4..-1]) rescue nil
+            elsif input_[0,10] =~ /[0-9a-fA-F]{8}0[01]/
+              srid_ = input_[0,8].to_i(16)
+              if input[9,1] == '1'
+                srid_ = [srid_].pack('V').unpack('N').first
+              end
+              factory_ = ar_class_.rgeo_factory_for_column(column_, :srid => srid_)
+              ::RGeo::WKRep::WKBParser.new(factory_).parse(input_[8..-1]) rescue nil
             else
               factory_ = ar_class_.rgeo_factory_for_column(column_)
-              ::RGeo::WKRep::WKTParser.new(factory_, :support_ewkt => true).parse(input_)
+              ::RGeo::WKRep::WKTParser.new(factory_, :support_ewkt => true).parse(input_) rescue nil
             end
           else
             nil
