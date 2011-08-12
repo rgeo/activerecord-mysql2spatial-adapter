@@ -46,18 +46,14 @@ module ActiveRecord
       class SpatialColumn < ConnectionAdapters::Mysql2Column
         
         
-        def initialize(name_, default_, sql_type_=nil, null_=true)
+        def initialize(factory_settings_, table_name_, name_, default_, sql_type_=nil, null_=true)
+          @factory_settings = factory_settings_
+          @table_name = table_name_
           super(name_, default_,sql_type_, null_)
           @geometric_type = ::RGeo::ActiveRecord.geometric_type_from_name(sql_type_)
           if type == :spatial
             @limit = {:type => @geometric_type.type_name.underscore}
           end
-          @ar_class = ::ActiveRecord::Base
-        end
-        
-        
-        def set_ar_class(val_)
-          @ar_class = val_
         end
         
         
@@ -75,12 +71,21 @@ module ActiveRecord
         
         
         def type_cast(value_)
-          type == :spatial ? SpatialColumn.convert_to_geometry(value_, @ar_class, name) : super
+          if type == :spatial
+            SpatialColumn.convert_to_geometry(value_, @factory_settings, @table_name, name)
+          else
+            super
+          end
         end
         
         
         def type_cast_code(var_name_)
-          type == :spatial ? "::ActiveRecord::ConnectionAdapters::Mysql2SpatialAdapter::SpatialColumn.convert_to_geometry(#{var_name_}, self.class, #{name.inspect})" : super
+          if type == :spatial
+            "::ActiveRecord::ConnectionAdapters::Mysql2SpatialAdapter::SpatialColumn.convert_to_geometry("+
+              "#{var_name_}, self.class.rgeo_factory_settings, self.class.table_name, #{name.inspect})"
+          else
+            super
+          end
         end
         
         
@@ -91,15 +96,15 @@ module ActiveRecord
         end
         
         
-        def self.convert_to_geometry(input_, ar_class_, column_)
+        def self.convert_to_geometry(input_, factory_settings_, table_name_, column_)
           case input_
           when ::RGeo::Feature::Geometry
-            factory_ = ar_class_.rgeo_factory_for_column(column_, :srid => input_.srid)
+            factory_ = factory_settings_.get_column_factory(table_name_, column_, :srid => input_.srid)
             ::RGeo::Feature.cast(input_, factory_) rescue nil
           when ::String
             marker_ = input_[4,1]
             if marker_ == "\x00" || marker_ == "\x01"
-              factory_ = ar_class_.rgeo_factory_for_column(column_,
+              factory_ = factory_settings_.get_column_factory(table_name_, column_,
                 :srid => input_[0,4].unpack(marker_ == "\x01" ? 'V' : 'N').first)
               ::RGeo::WKRep::WKBParser.new(factory_).parse(input_[4..-1]) rescue nil
             elsif input_[0,10] =~ /[0-9a-fA-F]{8}0[01]/
@@ -107,10 +112,10 @@ module ActiveRecord
               if input[9,1] == '1'
                 srid_ = [srid_].pack('V').unpack('N').first
               end
-              factory_ = ar_class_.rgeo_factory_for_column(column_, :srid => srid_)
+              factory_ = factory_settings_.get_column_factory(table_name_, column_, :srid => srid_)
               ::RGeo::WKRep::WKBParser.new(factory_).parse(input_[8..-1]) rescue nil
             else
-              factory_ = ar_class_.rgeo_factory_for_column(column_)
+              factory_ = factory_settings_.get_column_factory(table_name_, column_)
               ::RGeo::WKRep::WKTParser.new(factory_, :support_ewkt => true).parse(input_) rescue nil
             end
           else

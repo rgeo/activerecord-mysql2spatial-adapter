@@ -15,6 +15,6 @@
   s_.extra_rdoc_files = ::Dir.glob("*.rdoc")
   s_.test_files = ::Dir.glob("test/**/tc_*.rb")
   s_.platform = ::Gem::Platform::RUBY
-  s_.add_dependency('rgeo-activerecord', '~> 0.3.4')
-  s_.add_dependency('mysql2', '>= 0.2.6')
+  s_.add_dependency('rgeo-activerecord', '~> 0.4.0')
+  s_.add_dependency('mysql2', '>= 0.3.6')
 end

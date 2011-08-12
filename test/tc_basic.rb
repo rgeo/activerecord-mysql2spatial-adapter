@@ -105,7 +105,7 @@ module RGeo
               assert_nil(obj_.latlon)
               obj_.latlon = @factory.point(1, 2)
               assert_equal(@factory.point(1, 2), obj_.latlon)
-              assert_equal(4326, obj_.latlon.srid)
+              assert_equal(3785, obj_.latlon.srid)
             end
             
             
@@ -127,7 +127,7 @@ module RGeo
               id_ = obj_.id
               obj2_ = klass_.find(id_)
               assert_equal(@factory.point(1, 2), obj2_.latlon)
-              assert_equal(4326, obj2_.latlon.srid)
+              assert_equal(3785, obj2_.latlon.srid)
             end
             
             

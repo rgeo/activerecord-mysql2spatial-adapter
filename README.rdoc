@@ -77,7 +77,7 @@ Now you can interact with the data using the RGeo types:
 
 === Spatial Queries
 
-You can create simple queries based on spatial equality in the same way
+You can create simple queries based on objective equality in the same way
 you would on a scalar column:
 
   rec = MySpatialTable.where(:latlon => RGeo::Geos.factory.point(-122, 47)).first
@@ -101,9 +101,10 @@ This adapter has the following requirements:
 * Ruby 1.8.7 or later. Ruby 1.9.2 or later preferred.
 * MySQL server 5.0 or later required for spatial extensions.
 * \ActiveRecord 3.0.3 or later. Earlier versions will not work.
-* mysql2 gem 0.2.6 or later.
-* rgeo gem 0.3.1 or later.
-* rgeo-activerecord gem 0.3.4 or later.
+  Appears to be compatible with Rails 3.1rc5.
+* mysql2 gem 0.3.6 or later.
+* rgeo gem 0.3.2 or later.
+* rgeo-activerecord gem 0.4.0 or later.
 
 Install this adapter as a gem:
 
