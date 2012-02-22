@@ -43,7 +43,15 @@ module ActiveRecord
     module Mysql2SpatialAdapter
       
       
-      class SpatialColumn < ConnectionAdapters::Mysql2Column
+      # ActiveRecord 3.2 uses ConnectionAdapters::Mysql2Adapter::Column
+      # whereas 3.0 and 3.1 use ConnectionAdapters::Mysql2Column
+      column_base_class_ = defined?(ConnectionAdapters::Mysql2Adapter::Column) ?
+        ConnectionAdapters::Mysql2Adapter::Column : ConnectionAdapters::Mysql2Column
+      
+      class SpatialColumn < column_base_class_
+        
+        
+        FACTORY_SETTINGS_CACHE = {}
         
         
         def initialize(factory_settings_, table_name_, name_, default_, sql_type_=nil, null_=true)
@@ -54,6 +62,7 @@ module ActiveRecord
           if type == :spatial
             @limit = {:type => @geometric_type.type_name.underscore}
           end
+          FACTORY_SETTINGS_CACHE[factory_settings_.object_id] = factory_settings_
         end
         
         
@@ -82,7 +91,8 @@ module ActiveRecord
         def type_cast_code(var_name_)
           if type == :spatial
             "::ActiveRecord::ConnectionAdapters::Mysql2SpatialAdapter::SpatialColumn.convert_to_geometry("+
-              "#{var_name_}, self.class.rgeo_factory_settings, self.class.table_name, #{name.inspect})"
+              "#{var_name_}, ::ActiveRecord::ConnectionAdapters::Mysql2SpatialAdapter::SpatialColumn::"+
+              "FACTORY_SETTINGS_CACHE[#{@factory_settings.object_id}], #{@table_name.inspect}, #{name.inspect})"
           else
             super
           end
