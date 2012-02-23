@@ -1,15 +1,15 @@
 # -----------------------------------------------------------------------------
-# 
+#
 # Mysql2Spatial adapter for ActiveRecord
-# 
+#
 # -----------------------------------------------------------------------------
 # Copyright 2010 Daniel Azuma
-# 
+#
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
-# 
+#
 # * Redistributions of source code must retain the above copyright notice,
 #   this list of conditions and the following disclaimer.
 # * Redistributions in binary form must reproduce the above copyright notice,
@@ -18,7 +18,7 @@
 # * Neither the name of the copyright holder, nor the names of any other
 #   contributors to this software, may be used to endorse or promote products
 #   derived from this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 # IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -41,22 +41,22 @@ end
 
 
 module ActiveRecord
-  
+
   module ConnectionAdapters
-    
+
     module Mysql2SpatialAdapter
-      
-      
+
+
       # Current version of Mysql2SpatialAdapter as a frozen string
       VERSION_STRING = ::File.read(::File.dirname(__FILE__)+'/../../../../Version').strip.freeze
-      
+
       # Current version of Mysql2SpatialAdapter as a Versionomy object, if the
       # Versionomy gem is available; otherwise equal to VERSION_STRING.
       VERSION = defined?(::Versionomy) ? ::Versionomy.parse(VERSION_STRING) : VERSION_STRING
-      
-      
+
+
     end
-    
+
   end
-  
+
 end

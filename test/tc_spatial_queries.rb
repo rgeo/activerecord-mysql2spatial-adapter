@@ -1,15 +1,15 @@
 # -----------------------------------------------------------------------------
-# 
+#
 # Tests for the Mysql2Spatial ActiveRecord adapter
-# 
+#
 # -----------------------------------------------------------------------------
 # Copyright 2010 Daniel Azuma
-# 
+#
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
-# 
+#
 # * Redistributions of source code must retain the above copyright notice,
 #   this list of conditions and the following disclaimer.
 # * Redistributions in binary form must reproduce the above copyright notice,
@@ -18,7 +18,7 @@
 # * Neither the name of the copyright holder, nor the names of any other
 #   contributors to this software, may be used to endorse or promote products
 #   derived from this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 # IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -41,15 +41,15 @@ module RGeo
   module ActiveRecord  # :nodoc:
     module Mysql2SpatialAdapter  # :nodoc:
       module Tests  # :nodoc:
-        
+
         class TestSpatialQueries < ::Test::Unit::TestCase  # :nodoc:
-          
+
           DATABASE_CONFIG_PATH = ::File.dirname(__FILE__)+'/database.yml'
           include AdapterTestHelper
-          
+
           define_test_methods do
-            
-            
+
+
             def populate_ar_class(content_)
               klass_ = create_ar_class
               case content_
@@ -64,8 +64,8 @@ module RGeo
               end
               klass_
             end
-            
-            
+
+
             def test_query_point
               klass_ = populate_ar_class(:latlon_point)
               obj_ = klass_.new
@@ -77,8 +77,8 @@ module RGeo
               obj3_ = klass_.where(:latlon => @factory.point(2, 2)).first
               assert_nil(obj3_)
             end
-            
-            
+
+
             def _test_query_point_wkt
               klass_ = populate_ar_class(:latlon_point)
               obj_ = klass_.new
@@ -90,11 +90,11 @@ module RGeo
               obj3_ = klass_.where(:latlon => 'POINT(2 2)').first
               assert_nil(obj3_)
             end
-            
-            
+
+
             if ::RGeo::ActiveRecord.spatial_expressions_supported?
-              
-              
+
+
               def test_query_st_length
                 klass_ = populate_ar_class(:path_linestring)
                 obj_ = klass_.new
@@ -106,19 +106,19 @@ module RGeo
                 obj3_ = klass_.where(klass_.arel_table[:path].st_length.gt(3)).first
                 assert_nil(obj3_)
               end
-              
-              
+
+
             else
-              
+
               puts "WARNING: The current Arel does not support named functions. Spatial expression tests skipped."
-              
+
             end
-            
-            
+
+
           end
-          
+
         end
-        
+
       end
     end
   end
