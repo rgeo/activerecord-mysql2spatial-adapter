@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>History - MySQL2 Spatial ActiveRecord Adapter 0.4.2 Documentation</title>
+
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body class="file">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./History_rdoc.html">History</a>
+  
+    <li class="file"><a href="./README_rdoc.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./ActiveRecord/Base.html">ActiveRecord::Base</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation" class="description">
+  
+<h3 id="label-0.4.2+%2F+2012-02-22">0.4.2 / 2012-02-22</h3>
+<ul><li>
+<p>Some compatibility fixes for Rails 3.2. (Reported by Nicholas Zaillian and
+Ryan Williams with implementation help from Radek Paviensky.)</p>
+</li><li>
+<p>Now requires rgeo-activerecord 0.4.3.</p>
+</li></ul>
+
+<h3 id="label-0.4.1+%2F+2011-09-07">0.4.1 / 2011-09-07</h3>
+<ul><li>
+<p>Now requests mysql2 &gt;= 0.2.x instead of &gt;= 0.3.x since the latter
+requires Rails 3.1. (Reported by Greg Hazel)</p>
+</li></ul>
+
+<h3 id="label-0.4.0+%2F+2011-08-15">0.4.0 / 2011-08-15</h3>
+<ul><li>
+<p>Various fixes for Rails 3.1 compatibility.</p>
+</li><li>
+<p>Now requires rgeo-activerecord 0.4.0.</p>
+</li><li>
+<p>INCOMPATIBLE CHANGE: simple queries (e.g. MyClass.where(:latlon =&gt;
+my_point)) use an objective rather than spatial equality test. Earlier
+versions transformed this form to use st_equals, but now if you need to
+test for spatial equality, you’ll need to call st_equals explicitly. I’m
+still evaluating which direction we want to go with this in the future, but
+we may be stuck with the current behavior because the hack required to
+transform these queries to use spatial equality was egregious and broke in
+Rails 3.1 with no clear workaround.</p>
+</li></ul>
+
+<h3 id="label-0.3.3+%2F+2011-06-21">0.3.3 / 2011-06-21</h3>
+<ul><li>
+<p>Require latest rgeo-activerecord to get some fixes.</p>
+</li><li>
+<p>Support hex format for attribute setting.</p>
+</li><li>
+<p>No longer raises exceptions if parse fails on attribute setting. (Reported
+by Daniel Hackney)</p>
+</li></ul>
+
+<h3 id="label-0.3.2+%2F+2011-04-11">0.3.2 / 2011-04-11</h3>
+<ul><li>
+<p>A .gemspec file is now available for gem building and bundler git
+integration.</p>
+</li></ul>
+
+<h3 id="label-0.3.1+%2F+2011-02-28">0.3.1 / 2011-02-28</h3>
+<ul><li>
+<p>Now requires rgeo-activerecord 0.3.1 (which brings a critical fix involving
+declaring multiple spatial columns in migration).</p>
+</li></ul>
+
+<h3 id="label-0.3.0+%2F+2011-01-26">0.3.0 / 2011-01-26</h3>
+<ul><li>
+<p>Reworked type and constraint handling, which should result in a large
+number of bug fixes, especially related to schema dumps.</p>
+</li><li>
+<p>Experimental support for complex spatial queries. (Requires Arel 2.1, which
+is expected to be released with Rails 3.1.)</p>
+</li><li>
+<p>The path to the Railtie is now different (see the <a
+href="README_rdoc.html">README</a>), though a compatibility wrapper has
+been left in the old location.</p>
+</li><li>
+<p>Reorganized the code a bit for better clarity.</p>
+</li></ul>
+
+<h3 id="label-0.2.1+%2F+2010-12-27">0.2.1 / 2010-12-27</h3>
+<ul><li>
+<p>Support for basic spatial equality queries. e.g. constructs such as:</p>
+
+<pre class="ruby"><span class="ruby-constant">MyClass</span>.<span class="ruby-identifier">where</span>(:<span class="ruby-identifier">geom_column</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">factory</span>.<span class="ruby-identifier">point</span>(<span class="ruby-value">1</span>, <span class="ruby-value">2</span>))
+<span class="ruby-constant">MyClass</span>.<span class="ruby-identifier">where</span>(:<span class="ruby-identifier">geom_column</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'POINT(1 2)'</span>)
+</pre>
+</li></ul>
+
+<h3 id="label-0.2.0+%2F+2010-12-07">0.2.0 / 2010-12-07</h3>
+<ul><li>
+<p>Initial public alpha release. Spun activerecord-mysql2spatial-adapter off
+from the core rgeo gem.</p>
+</li><li>
+<p>You can now set the factory for a specific column by name.</p>
+</li></ul>
+
+<p>For earlier history, see the <a href="History_rdoc.html">History</a> file
+for the rgeo gem.</p>
+
+</div>
+
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+
