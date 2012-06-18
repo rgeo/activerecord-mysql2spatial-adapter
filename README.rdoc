@@ -149,7 +149,7 @@ Rails as of Rails 3.0.3, so we hope it will get rectified at some point.
 
 === Development and support
 
-Documentation is available at http://virtuoso.rubyforge.org/activerecord-mysql2spatial-adapter/README_rdoc.html
+Documentation is available at http://dazuma.github.com/activerecord-mysql2spatial-adapter/rdoc
 
 Source code is hosted on Github at http://github.com/dazuma/activerecord-mysql2spatial-adapter
 
@@ -175,7 +175,7 @@ source gave us a head start on the implementation.
 
 === License
 
-Copyright 2010-2011 Daniel Azuma
+Copyright 2010-2012 Daniel Azuma
 
 All rights reserved.
 
