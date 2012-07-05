@@ -1,3 +1,7 @@
+=== 0.4.3 / 2012-??-??
+
+* The gemspec no longer includes the timestamp in the version, so that bundler can pull from github. (Reported by corneverbruggen)
+
 === 0.4.2 / 2012-02-22
 
 * Some compatibility fixes for Rails 3.2. (Reported by Nicholas Zaillian and Ryan Williams with implementation help from Radek Paviensky.)

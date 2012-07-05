@@ -37,7 +37,7 @@
   s_.name = 'activerecord-mysql2spatial-adapter'
   s_.summary = 'An ActiveRecord adapter for MySQL Spatial Extensions, based on RGeo and the mysql2 gem.'
   s_.description = "This is an ActiveRecord connection adapter for MySQL Spatial Extensions. It is based on the stock MySQL2 adapter, but provides built-in support for spatial columns. It uses the RGeo library to represent spatial data in Ruby."
-  s_.version = "#{::File.read('Version').strip}.build#{::Time.now.utc.strftime('%Y%m%d%H%M%S')}"
+  s_.version = "#{::File.read('Version').strip}.nonrelease"
   s_.author = 'Daniel Azuma'
   s_.email = 'dazuma@gmail.com'
   s_.homepage = "http://dazuma.github.com/activerecord-mysql2spatial-adapter"
