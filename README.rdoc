@@ -103,8 +103,8 @@ This adapter has the following requirements:
 * \ActiveRecord 3.0.3 or later. Earlier versions will not work.
   Should be compatible with Rails versions through 3.2.x.
 * mysql2 gem 0.2.13 or later.
-* rgeo gem 0.3.4 or later.
-* rgeo-activerecord gem 0.4.3 or later.
+* rgeo gem 0.3.15 or later.
+* rgeo-activerecord gem 0.4.5 or later.
 
 Install this adapter as a gem:
 

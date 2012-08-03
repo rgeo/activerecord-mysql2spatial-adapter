@@ -1,6 +1,7 @@
-=== 0.4.3 / 2012-??-??
+=== 0.4.3 / 2012-08-02
 
 * The gemspec no longer includes the timestamp in the version, so that bundler can pull from github. (Reported by corneverbruggen)
+* Fix for compatibility with ActiveRecord >= 3.2.2. (Pull request by janv)
 
 === 0.4.2 / 2012-02-22
 
