@@ -40,7 +40,10 @@ module Arel
   module Visitors
 
     class MySQL2Spatial < MySQL
-      include Arel::Visitors::BindVisitor
+
+      if ::Arel::Visitors.const_defined?(:BindVisitor)
+        include ::Arel::Visitors::BindVisitor
+      end
 
       FUNC_MAP = {
         'st_wkttosql' => 'GeomFromText',
