@@ -98,7 +98,7 @@ module ActiveRecord
 
 
         def add_index(table_name_, column_name_, options_={})
-          if options_[:spatial]
+          if options_.try([:spatial])
             index_name_ = index_name(table_name_, :column => Array(column_name_))
             if ::Hash === options_
               index_name_ = options_[:name] || index_name_
