@@ -37,14 +37,9 @@
 # :stopdoc:
 
 module ActiveRecord
-
   module ConnectionAdapters
-
     module Mysql2SpatialAdapter
-
-
       class MainAdapter < ConnectionAdapters::Mysql2Adapter
-
 
         NATIVE_DATABASE_TYPES = Mysql2Adapter::NATIVE_DATABASE_TYPES.merge(:spatial => {:name => "geometry"})
 
@@ -115,7 +110,7 @@ module ActiveRecord
           columns_ = []
           result_.each(:symbolize_keys => true, :as => :hash) do |field_|
             columns_ << SpatialColumn.new(@rgeo_factory_settings, table_name_.to_s,
-              field_[:Field], field_[:Default], field_[:Type], field_[:Null] == "YES")
+              field_[:Field], field_[:Default], lookup_cast_type(field_[:Type]), field_[:Type], field_[:Null] == "YES")
           end
           columns_
         end
@@ -139,13 +134,20 @@ module ActiveRecord
         end
 
 
+        protected
+
+        def initialize_type_map(m)
+          register_class_with_limit m, %r(geometry)i, Type::Spatial
+          m.alias_type %r(point)i, 'geometry'
+          m.alias_type %r(linestring)i, 'geometry'
+          m.alias_type %r(polygon)i, 'geometry'
+          super
+        end
+
+
       end
-
-
     end
-
   end
-
 end
 
 # :startdoc:
