@@ -33,7 +33,7 @@
 # -----------------------------------------------------------------------------
 ;
 
-require 'test/unit'
+require 'minitest/autorun'
 require 'rgeo/active_record/adapter_test_helper'
 
 
@@ -41,14 +41,12 @@ module RGeo
   module ActiveRecord  # :nodoc:
     module Mysql2SpatialAdapter  # :nodoc:
       module Tests  # :nodoc:
-
-        class TestBasic < ::Test::Unit::TestCase  # :nodoc:
+        class TestBasic < ::Minitest::Test  # :nodoc:
 
           DATABASE_CONFIG_PATH = ::File.dirname(__FILE__)+'/database.yml'
-          include AdapterTestHelper
+          include RGeo::ActiveRecord::AdapterTestHelper
 
           define_test_methods do
-
 
             def populate_ar_class(content_)
               klass_ = create_ar_class
@@ -195,11 +193,9 @@ module RGeo
               assert(klass_.cached_attributes.include?('geom'))
             end
 
-
           end
 
         end
-
       end
     end
   end

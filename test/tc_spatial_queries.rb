@@ -33,7 +33,7 @@
 # -----------------------------------------------------------------------------
 ;
 
-require 'test/unit'
+require 'minitest/autorun'
 require 'rgeo/active_record/adapter_test_helper'
 
 
@@ -41,14 +41,12 @@ module RGeo
   module ActiveRecord  # :nodoc:
     module Mysql2SpatialAdapter  # :nodoc:
       module Tests  # :nodoc:
-
-        class TestSpatialQueries < ::Test::Unit::TestCase  # :nodoc:
+        class TestSpatialQueries < ::Minitest::Test  # :nodoc:
 
           DATABASE_CONFIG_PATH = ::File.dirname(__FILE__)+'/database.yml'
-          include AdapterTestHelper
+          include RGeo::ActiveRecord::AdapterTestHelper
 
           define_test_methods do
-
 
             def populate_ar_class(content_)
               klass_ = create_ar_class
@@ -93,8 +91,6 @@ module RGeo
 
 
             if ::RGeo::ActiveRecord.spatial_expressions_supported?
-
-
               def test_query_st_length
                 klass_ = populate_ar_class(:path_linestring)
                 obj_ = klass_.new
@@ -106,19 +102,13 @@ module RGeo
                 obj3_ = klass_.where(klass_.arel_table[:path].st_length.gt(3)).first
                 assert_nil(obj3_)
               end
-
-
             else
-
               puts "WARNING: The current Arel does not support named functions. Spatial expression tests skipped."
-
             end
-
 
           end
 
         end
-
       end
     end
   end
