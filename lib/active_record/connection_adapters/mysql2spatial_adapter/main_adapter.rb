@@ -137,11 +137,11 @@ module ActiveRecord
         protected
 
         def initialize_type_map(m)
+          super
           register_class_with_limit m, %r(geometry)i, Type::Spatial
           m.alias_type %r(point)i, 'geometry'
           m.alias_type %r(linestring)i, 'geometry'
           m.alias_type %r(polygon)i, 'geometry'
-          super
         end
 
 
