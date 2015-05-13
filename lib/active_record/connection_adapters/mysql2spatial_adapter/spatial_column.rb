@@ -42,8 +42,8 @@ module ActiveRecord
 
         FACTORY_SETTINGS_CACHE = {}
 
-        def initialize(factory_settings_, table_name_, name_, default_, cast_type_ = nil, sql_type_ = nil, null_ = true)
-          super(name_, default_, cast_type_, sql_type_, null_)
+        def initialize(factory_settings_, table_name_, name_, default_, cast_type_ = nil, sql_type_ = nil, null_ = true, collation_ = nil, extra_ = "")
+          super(name_, default_, cast_type_, sql_type_, null_, collation_, false, extra_)
           if type == :spatial
             cast_type.set_geo_params(factory_settings_, table_name_, ::RGeo::ActiveRecord.geometric_type_from_name(sql_type_))
           end

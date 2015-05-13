@@ -106,11 +106,11 @@ module ActiveRecord
 
 
         def columns(table_name_, name_=nil)
-          result_ = execute("SHOW FIELDS FROM #{quote_table_name(table_name_)}", :skip_logging)
+          result_ = @connection.query "SHOW FULL FIELDS FROM #{quote_table_name(table_name_)}"
           columns_ = []
           result_.each(:symbolize_keys => true, :as => :hash) do |field_|
             columns_ << SpatialColumn.new(@rgeo_factory_settings, table_name_.to_s,
-              field_[:Field], field_[:Default], lookup_cast_type(field_[:Type]), field_[:Type], field_[:Null] == "YES")
+              field_[:Field], field_[:Default], lookup_cast_type(field_[:Type]), field_[:Type], field_[:Null] == "YES", field_[:Collation], field_[:Extra])
           end
           columns_
         end
