@@ -60,7 +60,7 @@ module ActiveRecord
           super(name_, default_,sql_type_, null_)
           @geometric_type = ::RGeo::ActiveRecord.geometric_type_from_name(sql_type_)
           if type == :spatial
-            @limit = {:type => @geometric_type.type_name.underscore}
+            @limit = { type: @geometric_type.type_name.underscore }
           end
           FACTORY_SETTINGS_CACHE[factory_settings_.object_id] = factory_settings_
         end

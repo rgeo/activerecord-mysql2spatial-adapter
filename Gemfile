@@ -36,13 +36,12 @@
 
 source "http://rubygems.org"
 
-gem('rgeo-activerecord', '~> 0.4.5')
-gem('mysql2', '>= 0.2.13')
-#gem('activerecord', '~> 3.0.16')
-#gem('activerecord', '~> 3.1.7')
-gem('activerecord', '~> 3.2.7')
+gem 'rgeo-activerecord', github: 'rgeo/rgeo-activerecord', branch: '1.0'
+gem 'mysql2', '>= 0.2.13'
+gem 'activerecord', '>= 4.0', '< 4.2'
 
-group(:test) do
-  gem('rake', '>= 0.9.2')
-  gem('rdoc', '>= 3.12')
+group :test do
+  gem 'rake', '>= 0.9.2'
+  gem 'rdoc', '>= 3.12'
+  gem 'pry'
 end
