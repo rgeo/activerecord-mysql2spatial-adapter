@@ -11,7 +11,7 @@ requires the mysql2 gem.
 
 === Spatial Migrations
 
-First, this adapter extends the migration syntax to support creating 
+First, this adapter extends the migration syntax to support creating
 spatial columns and indexes. To create a spatial column, use the
 <tt>:geometry</tt> type, or any of the OGC spatial types such as
 <tt>:point</tt> or <tt>:line_string</tt>. To create a spatial index, set
@@ -55,13 +55,13 @@ the "rgeo-activerecord" gem.
 Examples, given the spatial table defined above:
 
   class MySpatialTable < ActiveRecord::Base
-    
+
     # By default, use the GEOS implementation for spatial columns.
     self.rgeo_factory_generator = RGeo::Geos.method(:factory)
-    
+
     # But use a geographic implementation for the :latlon column.
     set_rgeo_factory_for_column(:latlon, RGeo::Geographic.spherical_factory)
-    
+
   end
 
 Now you can interact with the data using the RGeo types:
