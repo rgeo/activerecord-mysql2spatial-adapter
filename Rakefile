@@ -44,6 +44,7 @@ RAKEFILE_CONFIG = {} unless defined?(::RAKEFILE_CONFIG)
 # Gemspec
 
 require 'rubygems'
+require 'pry'
 gemspec_ = eval(::File.read(::Dir.glob('*.gemspec').first))
 release_gemspec_ = eval(::File.read(::Dir.glob('*.gemspec').first))
 release_gemspec_.version = gemspec_.version.to_s.sub(/\.nonrelease$/, '')
@@ -68,6 +69,8 @@ platform_suffix_ =
       'mri18'
     elsif ::RUBY_VERSION =~ /^1\.9\..*$/
       'mri19'
+    elsif ::RUBY_VERSION =~ /^2\..*$/
+      'mri2'
     else
       raise "Unknown version of Matz Ruby Interpreter (#{::RUBY_VERSION})"
     end

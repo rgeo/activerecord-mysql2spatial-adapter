@@ -3,7 +3,7 @@
 The MySQL2 Spatial \ActiveRecord Adapter is an \ActiveRecord connection
 adapter based on the standard mysql2 adapter. It extends the standard
 adapter to provide support for spatial columns and indexes in MySQL,
-using the {RGeo}[http://github.com/dazuma/rgeo] library to represent
+using the {RGeo}[http://github.com/rgeo/rgeo] library to represent
 spatial data in Ruby. Like the standard mysql2 adapter, this adapter
 requires the mysql2 gem.
 
@@ -19,7 +19,7 @@ the <tt>:spatial</tt> option to true. Remember that, on some versions of
 MySQL, only the MyISAM engine supports spatial indexes, and the indexed
 column may need to be NOT NULL.
 
-Examples:
+Examples (require update):
 
   create_table :my_spatial_table, :options => 'ENGINE=MyISAM' do |t|
     t.column :latlon, :point, :null => false
@@ -98,13 +98,13 @@ write more complex queries in SQL.
 
 This adapter has the following requirements:
 
-* Ruby 1.8.7 or later. Ruby 1.9.2 or later preferred.
+* Ruby 1.9.3 or later. Ruby 2.0.0 or later preferred.
 * MySQL server 5.0 or later required for spatial extensions.
-* \ActiveRecord 3.0.3 or later. Earlier versions will not work.
-  Should be compatible with Rails versions through 3.2.x.
+* \ActiveRecord 4.0.0 or later. Earlier versions will not work.
+  Should be compatible with Rails versions through 4.0.x-4.1.x.
 * mysql2 gem 0.2.13 or later.
 * rgeo gem 0.3.15 or later.
-* rgeo-activerecord gem 0.4.5 or later.
+* rgeo-activerecord gem 1.x.
 
 Install this adapter as a gem:
 
@@ -149,17 +149,15 @@ Rails as of Rails 3.0.3, so we hope it will get rectified at some point.
 
 === Development and support
 
-Documentation is available at http://dazuma.github.com/activerecord-mysql2spatial-adapter/rdoc
+Documentation is available at http://rgeo.github.com/activerecord-mysql2spatial-adapter/rdoc
 
-Source code is hosted on Github at http://github.com/dazuma/activerecord-mysql2spatial-adapter
+Source code is hosted on Github at http://github.com/rgeo/activerecord-mysql2spatial-adapter
 
 Contributions are welcome. Fork the project on Github.
 
-Report bugs on Github issues at http://github.org/dazuma/activerecord-mysql2spatial-adapter/issues
+Report bugs on Github issues at http://github.org/rgeo/activerecord-mysql2spatial-adapter/issues
 
 Support available on the rgeo-users google group at http://groups.google.com/group/rgeo-users
-
-Contact the author at dazuma at gmail dot com.
 
 === Acknowledgments
 

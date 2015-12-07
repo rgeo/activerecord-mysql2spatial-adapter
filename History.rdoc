@@ -1,3 +1,7 @@
+=== 0.5.0 / 2015-08-06
+
+* Compatibility with ActiveRecord >= 4.0, < 4.2 and with rgeo-activerecord 1.x.
+
 === 0.4.3 / 2012-08-02
 
 * The gemspec no longer includes the timestamp in the version, so that bundler can pull from github. (Reported by corneverbruggen)
@@ -14,7 +18,7 @@
 
 === 0.4.0 / 2011-08-15
 
-* Various fixes for Rails 3.1 compatibility. 
+* Various fixes for Rails 3.1 compatibility.
 * Now requires rgeo-activerecord 0.4.0.
 * INCOMPATIBLE CHANGE: simple queries (e.g. MyClass.where(:latlon => my_point)) use an objective rather than spatial equality test. Earlier versions transformed this form to use st_equals, but now if you need to test for spatial equality, you'll need to call st_equals explicitly. I'm still evaluating which direction we want to go with this in the future, but we may be stuck with the current behavior because the hack required to transform these queries to use spatial equality was egregious and broke in Rails 3.1 with no clear workaround.
 
