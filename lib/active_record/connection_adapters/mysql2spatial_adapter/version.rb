@@ -1,8 +1,6 @@
-# -----------------------------------------------------------------------------
 #
 # Mysql2Spatial adapter for ActiveRecord
 #
-# -----------------------------------------------------------------------------
 # Copyright 2010 Daniel Azuma
 #
 # All rights reserved.
@@ -30,8 +28,6 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-# -----------------------------------------------------------------------------
-;
 
 
 begin
@@ -39,13 +35,9 @@ begin
 rescue ::LoadError
 end
 
-
 module ActiveRecord
-
   module ConnectionAdapters
-
     module Mysql2SpatialAdapter
-
 
       # Current version of Mysql2SpatialAdapter as a frozen string
       VERSION_STRING = ::File.read(::File.dirname(__FILE__)+'/../../../../Version').strip.freeze
@@ -54,9 +46,6 @@ module ActiveRecord
       # Versionomy gem is available; otherwise equal to VERSION_STRING.
       VERSION = defined?(::Versionomy) ? ::Versionomy.parse(VERSION_STRING) : VERSION_STRING
 
-
     end
-
   end
-
 end

@@ -1,8 +1,6 @@
-# -----------------------------------------------------------------------------
 #
 # Mysql2Spatial adapter for ActiveRecord
 #
-# -----------------------------------------------------------------------------
 # Copyright 2010 Daniel Azuma
 #
 # All rights reserved.
@@ -30,25 +28,20 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-# -----------------------------------------------------------------------------
-;
 
 
 require 'rgeo/active_record'
 require 'active_record/connection_adapters/mysql2_adapter'
-
 
 # The activerecord-mysql2spatial-adapter gem installs the *mysql2spatial*
 # connection adapter into ActiveRecord.
 
 module ActiveRecord
 
-
   # ActiveRecord looks for the mysql2spatial_connection factory method in
   # this class.
 
   class Base
-
 
     # Create a mysql2spatial connection adapter.
 
@@ -62,9 +55,7 @@ module ActiveRecord
       ::ActiveRecord::ConnectionAdapters::Mysql2SpatialAdapter::MainAdapter.new(client_, logger, options_, config_)
     end
 
-
   end
-
 
   # All ActiveRecord adapters go in this namespace.
   module ConnectionAdapters
@@ -76,12 +67,8 @@ module ActiveRecord
       ADAPTER_NAME = 'Mysql2Spatial'.freeze
 
     end
-
   end
-
-
 end
-
 
 require 'active_record/connection_adapters/mysql2spatial_adapter/version.rb'
 require 'active_record/connection_adapters/mysql2spatial_adapter/column_methods.rb' # check if this works with Rails < 4.x

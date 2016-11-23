@@ -1,8 +1,6 @@
-# -----------------------------------------------------------------------------
 #
 # Gemfile used for CI testing.
 #
-# -----------------------------------------------------------------------------
 # Copyright 2012 Daniel Azuma
 #
 # All rights reserved.
@@ -30,8 +28,7 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-# -----------------------------------------------------------------------------
 
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
 gemspec

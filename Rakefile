@@ -1,8 +1,6 @@
-# -----------------------------------------------------------------------------
 #
 # Generic Gem Rakefile
 #
-# -----------------------------------------------------------------------------
 # Copyright 2010-2012 Daniel Azuma
 #
 # All rights reserved.
@@ -30,8 +28,6 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-# -----------------------------------------------------------------------------
-;
 
 
 # Load config if present
@@ -93,14 +89,14 @@ internal_ext_info_ = gemspec_.extensions.map do |extconf_path_|
   source_dir_ = ::File.dirname(extconf_path_)
   name_ = ::File.basename(source_dir_)
   {
-    :name => name_,
-    :source_dir => source_dir_,
-    :extconf_path => extconf_path_,
-    :source_glob => "#{source_dir_}/*.{c,h}",
-    :obj_glob => "#{source_dir_}/*.{o,dSYM}",
-    :suffix_makefile_path => "#{source_dir_}/Makefile_#{platform_suffix_}",
-    :built_lib_path => "#{source_dir_}/#{name_}.#{dlext_}",
-    :staged_lib_path => "#{source_dir_}/#{name_}_#{platform_suffix_}.#{dlext_}",
+    name: name_,
+    source_dir: source_dir_,
+    extconf_path: extconf_path_,
+    source_glob: "#{source_dir_}/*.{c,h}",
+    obj_glob: "#{source_dir_}/*.{o,dSYM}",
+    suffix_makefile_path: "#{source_dir_}/Makefile_#{platform_suffix_}",
+    built_lib_path: "#{source_dir_}/#{name_}.#{dlext_}",
+    staged_lib_path: "#{source_dir_}/#{name_}_#{platform_suffix_}.#{dlext_}",
   }
 end
 internal_ext_info_ = [] if platform_ == :jruby
@@ -123,7 +119,7 @@ internal_ext_info_.each do |info_|
   end
 end
 
-task :build_ext => internal_ext_info_.map{ |info_| info_[:staged_lib_path] } do
+task build_ext: internal_ext_info_.map{ |info_| info_[:staged_lib_path] } do
   internal_ext_info_.each do |info_|
     target_prefix_ = target_name_ = nil
     ::Dir.chdir(info_[:source_dir]) do
@@ -161,7 +157,7 @@ end
 
 # RDoc tasks
 
-task :build_rdoc => "#{doc_directory_}/index.html"
+task build_rdoc: "#{doc_directory_}/index.html"
 all_rdoc_files_ = ::Dir.glob("lib/**/*.rb") + gemspec_.extra_rdoc_files
 main_rdoc_file_ = ::RAKEFILE_CONFIG[:main_rdoc_file]
 main_rdoc_file_ = 'README.rdoc' if !main_rdoc_file_ && ::File.readable?('README.rdoc')
@@ -184,19 +180,19 @@ end
 
 task :build_other
 
-task :build_gem => :build_other do
+task build_gem: :build_other do
   ::Gem::Builder.new(gemspec_).build
   mkdir_p(pkg_directory_)
   mv "#{gemspec_.name}-#{gemspec_.version}.gem", "#{pkg_directory_}/"
 end
 
-task :build_release => :build_other do
+task build_release: :build_other do
   ::Gem::Builder.new(release_gemspec_).build
   mkdir_p(pkg_directory_)
   mv "#{release_gemspec_.name}-#{release_gemspec_.version}.gem", "#{pkg_directory_}/"
 end
 
-task :release_gem => :build_release do
+task release_gem: :build_release do
   ::Dir.chdir(pkg_directory_) do
     sh "#{::RbConfig::TOPDIR}/bin/gem push #{release_gemspec_.name}-#{release_gemspec_.version}.gem"
   end
@@ -205,7 +201,7 @@ end
 
 # Unit test task
 
-task :test => [:build_ext, :build_other] do
+task test: [:build_ext, :build_other] do
   $:.unshift(::File.expand_path('lib', ::File.dirname(__FILE__)))
   if ::ENV['TESTCASE']
     test_files_ = ::Dir.glob("test/#{::ENV['TESTCASE']}.rb")
@@ -221,4 +217,4 @@ end
 
 # Default task
 
-task :default => [:clean, :test]
+task default: [:clean, :test]
