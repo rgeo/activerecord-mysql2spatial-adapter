@@ -31,17 +31,7 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 # -----------------------------------------------------------------------------
-;
 
+source "https://rubygems.org"
 
-source "http://rubygems.org"
-
-gem 'rgeo-activerecord', github: 'rgeo/rgeo-activerecord', branch: '1.0'
-gem 'mysql2', '>= 0.2.13', '< 0.4.0'
-gem 'activerecord', '>= 4.0', '< 4.2'
-
-group :test do
-  gem 'rake', '>= 0.9.2'
-  gem 'rdoc', '>= 3.12'
-  gem 'pry'
-end
+gemspec
