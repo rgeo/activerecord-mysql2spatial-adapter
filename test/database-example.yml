@@ -1,0 +1,8 @@
+# Copy this file to database.yml in the same directory and fill in the empty fields
+adapter: mysql2spatial
+encoding: utf8
+reconnect: true
+host: localhost
+database:
+username:
+password:
