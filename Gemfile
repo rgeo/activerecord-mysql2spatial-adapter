@@ -36,6 +36,7 @@ source "https://rubygems.org"
 
 gem 'activerecord', '>= 4.0', '< 4.2'
 gem 'mysql2', '>= 0.2.13', '< 0.4.0'
+gem 'rgeo', '< 0.5'
 gem 'rgeo-activerecord', git: 'https://github.com/rgeo/rgeo-activerecord.git', branch: '1.0'
 
 group :test do
