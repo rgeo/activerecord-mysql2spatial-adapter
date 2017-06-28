@@ -51,5 +51,5 @@
   s_.test_files = ::Dir.glob("test/**/tc_*.rb")
   s_.platform = ::Gem::Platform::RUBY
   s_.add_dependency('rgeo-activerecord', '~> 1.0')
-  s_.add_dependency('mysql2', '>= 0.2.13')
+  s_.add_dependency('mysql2', '>= 0.2.13', '< 0.4.0')
 end
