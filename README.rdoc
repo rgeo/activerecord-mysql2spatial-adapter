@@ -149,6 +149,25 @@ Rails as of Rails 3.0.3, so we hope it will get rectified at some point.
 
 === Development and support
 
+==== Set-up
+
+Create a test database configuration file <tt>test/database.yml</tt> with the following content (replace with proper dbname/username/password):
+
+    adapter:   mysql2spatial
+    encoding:  utf8
+    reconnect: true
+    host:      localhost
+    database:  YOUR_DATABASE_NAME
+    username:  YOUR_USER_NAME
+    password:  PASSWORD_OR_NOTHING
+
+Install required gems with <tt>bundle install</tt> (remove Gemfile.lock and then install gems if there are any issues with gem versions).
+
+Run the test suite before committing or publishing any changes:
+
+    bundle exec rake test
+
+
 Documentation is available at http://rgeo.github.com/activerecord-mysql2spatial-adapter/rdoc
 
 Source code is hosted on Github at http://github.com/rgeo/activerecord-mysql2spatial-adapter
