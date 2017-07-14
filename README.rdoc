@@ -149,9 +149,17 @@ Rails as of Rails 3.0.3, so we hope it will get rectified at some point.
 
 === Development and support
 
-==== Set-up
+==== Setup
 
-Create a test database configuration file <tt>test/database.yml</tt> with the following content (replace with proper dbname/username/password):
+To install the most recent supported versions of required gems and run the tests against them,
+
+Install {GEOS}[https://trac.osgeo.org/geos/] as appropriate for your OS.
+rgeo works to some extent without GEOS, but this gem's tests require it.
+Be sure to install GEOS before installing gems so that it's compiled into rgeo.
+
+Create a test database configuration file <tt>test/database.yml</tt> with the following content.
+If you like you can copy <tt>test/database-example.yml</tt> to <tt>test/database.yml</tt>.
+Replace the database, username and password with correct values.
 
     adapter:   mysql2spatial
     encoding:  utf8
@@ -161,12 +169,14 @@ Create a test database configuration file <tt>test/database.yml</tt> with the fo
     username:  YOUR_USER_NAME
     password:  PASSWORD_OR_NOTHING
 
-Install required gems with <tt>bundle install</tt> (remove Gemfile.lock and then install gems if there are any issues with gem versions).
+Then,
 
-Run the test suite before committing or publishing any changes:
-
+    bundle install
     bundle exec rake test
 
+Always do this before sharing a revision with others.
+
+==== Resources
 
 Documentation is available at http://rgeo.github.com/activerecord-mysql2spatial-adapter/rdoc
 
