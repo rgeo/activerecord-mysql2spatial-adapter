@@ -1,8 +1,6 @@
-# -----------------------------------------------------------------------------
 #
 # Mysql2Spatial adapter for ActiveRecord
 #
-# -----------------------------------------------------------------------------
 # Copyright 2010 Daniel Azuma
 #
 # All rights reserved.
@@ -30,18 +28,13 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-# -----------------------------------------------------------------------------
-;
 
 
 # :stopdoc:
 
 module ActiveRecord
-
   module ConnectionAdapters
-
     module Mysql2SpatialAdapter
-
 
       # ActiveRecord 3.2 uses ConnectionAdapters::Mysql2Adapter::Column
       # whereas 3.0 and 3.1 use ConnectionAdapters::Mysql2Column
@@ -50,9 +43,7 @@ module ActiveRecord
 
       class SpatialColumn < column_base_class_
 
-
         FACTORY_SETTINGS_CACHE = {}
-
 
         def initialize(factory_settings_, table_name_, name_, default_, sql_type_=nil, null_=true)
           @factory_settings = factory_settings_
@@ -65,19 +56,15 @@ module ActiveRecord
           FACTORY_SETTINGS_CACHE[factory_settings_.object_id] = factory_settings_
         end
 
-
         attr_reader :geometric_type
-
 
         def spatial?
           type == :spatial
         end
 
-
         def klass
           type == :spatial ? ::RGeo::Feature::Geometry : super
         end
-
 
         def type_cast(value_)
           if type == :spatial
@@ -86,7 +73,6 @@ module ActiveRecord
             super
           end
         end
-
 
         def type_cast_code(var_name_)
           if type == :spatial
@@ -98,7 +84,6 @@ module ActiveRecord
           end
         end
 
-
         private
 
         def simplified_type(sql_type_)
@@ -109,24 +94,24 @@ module ActiveRecord
         def self.convert_to_geometry(input_, factory_settings_, table_name_, column_)
           case input_
           when ::RGeo::Feature::Geometry
-            factory_ = factory_settings_.get_column_factory(table_name_, column_, :srid => input_.srid)
+            factory_ = factory_settings_.get_column_factory(table_name_, column_, srid: input_.srid)
             ::RGeo::Feature.cast(input_, factory_) rescue nil
           when ::String
             marker_ = input_[4,1]
             if marker_ == "\x00" || marker_ == "\x01"
               factory_ = factory_settings_.get_column_factory(table_name_, column_,
-                :srid => input_[0,4].unpack(marker_ == "\x01" ? 'V' : 'N').first)
+                srid: input_[0, 4].unpack(marker_ == "\x01" ? 'V' : 'N').first)
               ::RGeo::WKRep::WKBParser.new(factory_).parse(input_[4..-1]) rescue nil
             elsif input_[0,10] =~ /[0-9a-fA-F]{8}0[01]/
               srid_ = input_[0,8].to_i(16)
               if input[9,1] == '1'
                 srid_ = [srid_].pack('V').unpack('N').first
               end
-              factory_ = factory_settings_.get_column_factory(table_name_, column_, :srid => srid_)
+              factory_ = factory_settings_.get_column_factory(table_name_, column_, srid: srid_)
               ::RGeo::WKRep::WKBParser.new(factory_).parse(input_[8..-1]) rescue nil
             else
               factory_ = factory_settings_.get_column_factory(table_name_, column_)
-              ::RGeo::WKRep::WKTParser.new(factory_, :support_ewkt => true).parse(input_) rescue nil
+              ::RGeo::WKRep::WKTParser.new(factory_, support_ewkt: true).parse(input_) rescue nil
             end
           else
             nil

@@ -1,8 +1,6 @@
-# -----------------------------------------------------------------------------
 #
 # MySQL2 Spatial ActiveRecord Adapter Gemspec
 #
-# -----------------------------------------------------------------------------
 # Copyright 2011-2012 Daniel Azuma
 #
 # All rights reserved.
@@ -30,7 +28,6 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-# -----------------------------------------------------------------------------
 
 ::Gem::Specification.new do |s_|
   s_.name = 'activerecord-mysql2spatial-adapter'
@@ -50,7 +47,6 @@
   s_.add_dependency('activerecord', '>= 4.0', '< 4.2')
   s_.add_dependency('rgeo-activerecord', '~> 1.3')
   s_.add_dependency('mysql2', '>= 0.2.13', '< 0.4.0')
-  s_.add_development_dependency('pry')
   s_.add_development_dependency('rake', '>= 0.9.2')
   s_.add_development_dependency('rdoc', '>= 3.12')
 end

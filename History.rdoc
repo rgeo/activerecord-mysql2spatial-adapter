@@ -1,3 +1,8 @@
+=== 0.5.2
+
+* Code cleanup, whitespace, comments
+* Use Ruby 1.9+ syntax for hashes
+
 === 0.5.1 / 2017-07-04
 
 * Move dependency on rgeo-activerecord from unreleased 1.0 branch to 1.3.0 release.
