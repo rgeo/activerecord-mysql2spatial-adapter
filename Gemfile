@@ -32,3 +32,4 @@
 source 'https://rubygems.org'
 
 gemspec
+gem 'rgeo-activerecord', git: 'https://github.com/dschweisguth/rgeo-activerecord.git', branch: '2.0'

@@ -75,3 +75,4 @@ require 'active_record/connection_adapters/mysql2spatial_adapter/column_methods.
 require 'active_record/connection_adapters/mysql2spatial_adapter/main_adapter.rb'
 require 'active_record/connection_adapters/mysql2spatial_adapter/spatial_column.rb'
 require 'active_record/connection_adapters/mysql2spatial_adapter/arel_tosql.rb'
+require 'active_record/type/spatial.rb'
