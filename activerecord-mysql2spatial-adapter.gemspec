@@ -45,7 +45,7 @@
   s_.extra_rdoc_files = ::Dir.glob("*.rdoc")
   s_.platform = ::Gem::Platform::RUBY
   s_.add_dependency('activerecord', '>= 4.0', '< 4.3')
-  s_.add_dependency('rgeo-activerecord', '~> 1.3')
+  s_.add_dependency('rgeo-activerecord', '>= 1.3', '< 4.1')
   s_.add_dependency('mysql2', '>= 0.2.13', '< 0.5.0')
   s_.add_development_dependency('rake', '>= 0.9.2')
   s_.add_development_dependency('rdoc', '>= 3.12')
