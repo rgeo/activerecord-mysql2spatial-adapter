@@ -1,6 +1,8 @@
+# -----------------------------------------------------------------------------
 #
 # Mysql2Spatial adapter for ActiveRecord
 #
+# -----------------------------------------------------------------------------
 # Copyright 2010 Daniel Azuma
 #
 # All rights reserved.
@@ -28,6 +30,8 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
+# -----------------------------------------------------------------------------
+;
 
 
 # :stopdoc:
@@ -97,7 +101,7 @@ module ActiveRecord
           columns_ = []
           result_.each(symbolize_keys: true, as: :hash) do |field_|
             columns_ << SpatialColumn.new(@rgeo_factory_settings, table_name_.to_s,
-              field_[:Field], field_[:Default], field_[:Type], field_[:Null] == "YES")
+              field_[:Field], field_[:Default], lookup_cast_type(field_[:Type]), field_[:Type], field_[:Null] == "YES", field_[:Collation], field_[:Extra])
           end
           columns_
         end
@@ -124,9 +128,20 @@ module ActiveRecord
             end
             last_index_ = indexes_.last
             last_index_.columns << row_[:Column_name]
-            last_index_.lengths << row_[:Sub_part] unless mysql_index_type == :spatial
+            last_index_.lengths << row_[:Sub_part] unless last_index_.spatial
           end
           indexes_
+        end
+
+
+        protected
+
+        def initialize_type_map(m)
+          super
+          register_class_with_limit m, %r(geometry)i, Type::Spatial
+          m.alias_type %r(point)i, 'geometry'
+          m.alias_type %r(linestring)i, 'geometry'
+          m.alias_type %r(polygon)i, 'geometry'
         end
       end
     end
