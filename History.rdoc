@@ -1,3 +1,7 @@
+=== upcoming
+
+* compadibility with activerecord 4.2.9
+
 === 0.5.2
 
 * Code cleanup, whitespace, comments
