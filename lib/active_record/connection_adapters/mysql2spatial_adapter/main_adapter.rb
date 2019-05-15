@@ -93,11 +93,11 @@ module ActiveRecord
         end
 
         def columns(table_name_, name_=nil)
-          result_ = execute("SHOW FIELDS FROM #{quote_table_name(table_name_)}", :skip_logging)
+          result_ = execute("SHOW FULL FIELDS FROM #{quote_table_name(table_name_)}", :skip_logging)
           columns_ = []
           result_.each(symbolize_keys: true, as: :hash) do |field_|
             columns_ << SpatialColumn.new(@rgeo_factory_settings, table_name_.to_s,
-              field_[:Field], field_[:Default], field_[:Type], field_[:Null] == "YES")
+              field_[:Field], field_[:Default], lookup_cast_type(field_[:Type]), field_[:Type], field_[:Null] == "YES", field_[:Collation], field_[:Extra])
           end
           columns_
         end
@@ -110,23 +110,25 @@ module ActiveRecord
           result_.each(symbolize_keys: true, as: :hash) do |row_|
             if current_index_ != row_[:Key_name]
               next if row_[:Key_name] == 'PRIMARY' # skip the primary key
+
               current_index_ = row_[:Key_name]
-              mysql_index_type = row_[:Index_type].downcase.to_sym
-              index_type  = INDEX_TYPES.include?(mysql_index_type)  ? mysql_index_type : nil
-              index_using = INDEX_USINGS.include?(mysql_index_type) ? mysql_index_type : nil
-              options = [row_[:Table], row_[:Key_name], row_[:Non_unique].to_i == 0, [], [], nil, nil, index_type, index_using]
-              indexes_ << if mysql_index_type == :spatial
-                options.push(true)
-                ::RGeo::ActiveRecord::SpatialIndexDefinition.new(*options)
-              else
-                IndexDefinition.new(*options)
-              end
+              indexes_ << ::RGeo::ActiveRecord::SpatialIndexDefinition.new(row_[:Table], row_[:Key_name], row_[:Non_unique] == 0, [], [], nil, nil, row_[:Index_type] == 'SPATIAL')
             end
             last_index_ = indexes_.last
             last_index_.columns << row_[:Column_name]
-            last_index_.lengths << row_[:Sub_part] unless mysql_index_type == :spatial
+            last_index_.lengths << row_[:Sub_part] unless last_index_.spatial
           end
           indexes_
+        end
+
+        protected
+
+        def initialize_type_map(m)
+          super
+          register_class_with_limit m, %r(geometry)i, Type::Spatial
+          m.alias_type %r(point)i, 'geometry'
+          m.alias_type %r(linestring)i, 'geometry'
+          m.alias_type %r(polygon)i, 'geometry'
         end
       end
     end
