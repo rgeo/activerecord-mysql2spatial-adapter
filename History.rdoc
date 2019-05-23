@@ -1,3 +1,9 @@
+=== 1.0.0 / 2019-05-23
+
+* Prefix all MySQL geometry functions' names with "ST_"
+* Force ST_GeomFromWKB to generate bytes in little_endian format.
+* Spatial data should be updated if there're changes in SRID or shape.
+
 === 0.5.2
 
 * Code cleanup, whitespace, comments
