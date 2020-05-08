@@ -90,7 +90,6 @@ module ActiveRecord
           sql_type_ =~ /geometry|point|linestring|polygon/i ? :spatial : super
         end
 
-
         def self.convert_to_geometry(input_, factory_settings_, table_name_, column_)
           case input_
           when ::RGeo::Feature::Geometry
@@ -117,15 +116,9 @@ module ActiveRecord
             nil
           end
         end
-
-
       end
-
-
     end
-
   end
-
 end
 
 # :startdoc:
