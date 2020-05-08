@@ -33,16 +33,14 @@ require 'minitest/autorun'
 require 'rgeo/active_record/adapter_test_helper'
 
 module RGeo
-  module ActiveRecord  # :nodoc:
-    module Mysql2SpatialAdapter  # :nodoc:
-      module Tests  # :nodoc:
-        class TestSpatialQueries < ::Minitest::Test  # :nodoc:
-
-          DATABASE_CONFIG_PATH = ::File.dirname(__FILE__)+'/database.yml'
+  module ActiveRecord # :nodoc:
+    module Mysql2SpatialAdapter # :nodoc:
+      module Tests # :nodoc:
+        class TestSpatialQueries < ::Minitest::Test # :nodoc:
+          DATABASE_CONFIG_PATH = ::File.dirname(__FILE__) + '/database.yml'
           include RGeo::ActiveRecord::AdapterTestHelper
 
           define_test_methods do
-
             def populate_ar_class(content_)
               klass_ = create_ar_class
               case content_
@@ -97,11 +95,9 @@ module RGeo
               end
 
             else
-              puts "WARNING: The current Arel does not support named functions. Spatial expression tests skipped."
+              puts 'WARNING: The current Arel does not support named functions. Spatial expression tests skipped.'
             end
-
           end
-
         end
       end
     end

@@ -29,13 +29,11 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-
 # :stopdoc:
 
 module Arel
   module Visitors
     class MySQL2Spatial < MySQL
-
       if ::Arel::Visitors.const_defined?(:BindVisitor)
         include ::Arel::Visitors::BindVisitor
       end
@@ -43,8 +41,8 @@ module Arel
       FUNC_MAP = {
         'st_wkttosql' => 'GeomFromText',
         'st_wkbtosql' => 'GeomFromWKB',
-        'st_length' => 'GLength',
-      }
+        'st_length' => 'GLength'
+      }.freeze
 
       include ::RGeo::ActiveRecord::SpatialToSql
 
@@ -52,16 +50,14 @@ module Arel
         if (name_ = FUNC_MAP[standard_name_.downcase])
           name_
         elsif standard_name_ =~ /^st_(\w+)$/i
-          $1
+          Regexp.last_match(1)
         else
           standard_name_
         end
       end
-
     end
 
     VISITORS['mysql2spatial'] = ::Arel::Visitors::MySQL2Spatial
-
   end
 end
 
