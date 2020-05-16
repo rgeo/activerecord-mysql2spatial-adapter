@@ -3,7 +3,10 @@ module ActiveRecord
     module Mysql2SpatialAdapter
       module ColumnMethods
         def spatial(name, options = {})
-          raise "You must set a type. For example: 't.spatial limit: { type: 'point' }'" unless options[:limit][:type]
+          unless options[:limit][:type]
+            raise "You must set a type. For example: 't.spatial limit: { type: 'point' }'"
+          end
+
           column(name, options[:limit][:type], options)
         end
 
@@ -40,7 +43,7 @@ module ActiveRecord
         end
       end
 
-      ConnectionAdapters::TableDefinition.send(:include, ColumnMethods)
+      ConnectionAdapters::TableDefinition.include ColumnMethods
     end
   end
 end

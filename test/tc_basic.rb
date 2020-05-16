@@ -33,12 +33,11 @@ require 'minitest/autorun'
 require 'rgeo/active_record/adapter_test_helper'
 
 module RGeo
-  module ActiveRecord  # :nodoc:
-    module Mysql2SpatialAdapter  # :nodoc:
-      module Tests  # :nodoc:
-        class TestBasic < ::Minitest::Test  # :nodoc:
-
-          DATABASE_CONFIG_PATH = ::File.dirname(__FILE__)+'/database.yml'
+  module ActiveRecord # :nodoc:
+    module Mysql2SpatialAdapter # :nodoc:
+      module Tests # :nodoc:
+        class TestBasic < ::Minitest::Test # :nodoc:
+          DATABASE_CONFIG_PATH = ::File.dirname(__FILE__) + '/database.yml'
           include RGeo::ActiveRecord::AdapterTestHelper
 
           define_test_methods do
@@ -174,9 +173,7 @@ module RGeo
               assert_equal(::RGeo::Feature::LineString, klass_.columns.last.geometric_type)
               assert(klass_.cached_attributes.include?('geom'))
             end
-
           end
-
         end
       end
     end

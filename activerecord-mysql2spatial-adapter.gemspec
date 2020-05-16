@@ -32,17 +32,17 @@
 ::Gem::Specification.new do |s_|
   s_.name = 'activerecord-mysql2spatial-adapter'
   s_.summary = 'An ActiveRecord adapter for MySQL Spatial Extensions, based on RGeo and the mysql2 gem.'
-  s_.description = "This is an ActiveRecord connection adapter for MySQL Spatial Extensions. It is based on the stock MySQL2 adapter, but provides built-in support for spatial columns. It uses the RGeo library to represent spatial data in Ruby."
-  s_.version = "#{::File.read('Version').strip}"
+  s_.description = 'This is an ActiveRecord connection adapter for MySQL Spatial Extensions. It is based on the stock MySQL2 adapter, but provides built-in support for spatial columns. It uses the RGeo library to represent spatial data in Ruby.'
+  s_.version = ::File.read('Version').strip.to_s
   s_.author = 'Daniel Azuma'
   s_.email = 'dazuma@gmail.com'
   s_.required_ruby_version = '>= 1.9.3'
   s_.files =
-    ::Dir.glob("lib/**/*.rb") +
-    ::Dir.glob("test/**/*.rb") +
-    ::Dir.glob("*.rdoc") +
+    ::Dir.glob('lib/**/*.rb') +
+    ::Dir.glob('test/**/*.rb') +
+    ::Dir.glob('*.rdoc') +
     ['Version']
-  s_.extra_rdoc_files = ::Dir.glob("*.rdoc")
+  s_.extra_rdoc_files = ::Dir.glob('*.rdoc')
   s_.platform = ::Gem::Platform::RUBY
   s_.add_dependency('activerecord', '>= 4.0', '< 4.2')
   s_.add_dependency('rgeo-activerecord', '~> 1.3')
