@@ -115,8 +115,8 @@ installation information.
 
 === Basic Setup
 
-To use this adapter, add this gem, "activerecord-mysql2spatial-adapter",
-to your Gemfile, and then request the adapter name "mysql2spatial" in
+To use this adapter, add this gem, <b>"activerecord-mysql2spatial-adapter"</b>,
+to your Gemfile, and then request the adapter name <b>"mysql2spatial"</b> in
 your database connection configuration (which, for a Rails application,
 is in the config/database.yml file). The other database connection
 configuration parameters are the same as for the stock mysql2 adapter,
