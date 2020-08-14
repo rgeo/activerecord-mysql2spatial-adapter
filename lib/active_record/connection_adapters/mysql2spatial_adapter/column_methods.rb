@@ -43,7 +43,7 @@ module ActiveRecord
         end
       end
 
-      ConnectionAdapters::TableDefinition.include ColumnMethods
+      ConnectionAdapters::TableDefinition.send(:include, ColumnMethods)
     end
   end
 end

@@ -39,10 +39,10 @@ module Arel
       end
 
       FUNC_MAP = {
-        'st_wkttosql' => 'GeomFromText',
-        'st_wkbtosql' => 'GeomFromWKB',
-        'st_length' => 'GLength'
-      }.freeze
+        'st_wkttosql' => 'ST_GeomFromText',
+        'st_wkbtosql' => 'ST_GeomFromWKB',
+        'st_length' => 'ST_GLength'
+      }
 
       include ::RGeo::ActiveRecord::SpatialToSql
 
